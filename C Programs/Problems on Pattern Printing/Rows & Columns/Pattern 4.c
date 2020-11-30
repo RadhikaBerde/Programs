@@ -8,7 +8,9 @@ Output :
 
  */
 
- void Pattern(int iRow, int iCol)
+#include<stdio.h>
+
+void Pattern(int iRow, int iCol)
 {
     int i=0;
     int j=0;
