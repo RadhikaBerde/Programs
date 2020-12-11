@@ -1,0 +1,61 @@
+/*5. Write java program which accept N numbers from user and return product of all odd elements.
+
+Input : N : 6
+Elements : 15 66 3 70 10 88
+Output : 45
+
+Input : N : 6
+Elements : 44 66 72 70 10 88
+Output : 0 
+
+*/
+
+import java.lang.*;
+import java.util.*;
+
+class Number
+{
+   int Display(int Arr[])
+    {      
+       int i=0;
+       int Ans=-1;
+
+       while(i<Arr.length)
+        {
+          if(Arr[i]%2!=0)
+           {
+              Ans=-Ans*Arr[i];           
+           }
+         i++;
+    }
+	   return Ans;
+  }  
+}
+
+class Demo
+{
+	public static void main(String arg[])
+	{
+	    int iSize=0;
+	    int no=0;
+	    int ret =0;
+	    int i=0;
+	    
+	    Scanner sobj=new Scanner(System.in);
+	    Number nobj=new Number();
+		
+	    System.out.println("Enter Size of array: ");
+	    iSize=sobj.nextInt();
+		
+	    int arr[]=new int[iSize];		
+	    System.out.println("Enter all elements: ");
+	    for(i=0;i<iSize;i++)
+	      {
+		        arr[i]=sobj.nextInt();
+	      }
+	
+	    ret=nobj.Display(arr);
+	    System.out.println("Product of all odd elements are: "+ret);		
+     }
+}
+    
