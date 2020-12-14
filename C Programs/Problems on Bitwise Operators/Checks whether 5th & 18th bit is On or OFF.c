@@ -1,4 +1,4 @@
-// 2. Write a program which checks whether 5th & 18th bit is On or OFF.
+//  Write a program which checks whether 5th & 18th bit is On or OFF.
 
 #include<stdio.h>
 typedef int BOOL;
