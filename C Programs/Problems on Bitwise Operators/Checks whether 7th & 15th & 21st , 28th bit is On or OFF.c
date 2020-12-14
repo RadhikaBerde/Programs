@@ -1,4 +1,4 @@
-// 3. Write a program which checks whether 7th & 15th & 21st , 28th bit is On or OFF.
+//  Write a program which checks whether 7th & 15th & 21st , 28th bit is On or OFF.
 
 #include<stdio.h>
 
