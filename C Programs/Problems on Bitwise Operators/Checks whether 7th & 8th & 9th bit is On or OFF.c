@@ -1,4 +1,4 @@
-// 4. Write a program which checks whether 7th & 8th & 9th bit is On or OFF.
+//  Write a program which checks whether 7th & 8th & 9th bit is On or OFF.
 
 #include<stdio.h>
 
