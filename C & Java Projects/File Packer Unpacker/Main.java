@@ -10,7 +10,7 @@ class Main
 	{
 		Scanner sobj = new Scanner(System.in);
 		System.out.println("-------------------------------");
-		System.out.println("Marvellous Packer - Unpacker");
+		System.out.println("Packer - Unpacker");
 	
 		while(true)
 		{
@@ -46,7 +46,7 @@ class Main
 
 				case 3:
 						System.out.println("-------------------------------");
-					System.out.println("Thank you for using Marvellous Packer Unpacker");
+					System.out.println("Thank you for using Packer Unpacker");
 							System.out.println("-------------------------------");
 					System.exit(0);
 					break;
