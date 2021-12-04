@@ -17,7 +17,7 @@ Call all the methods by using both the objects.
 
 class Arithematic
 {
-    Number1 : number;
+        Number1 : number;
 	Number2 : number;
 	ans : number = 0;
 	
@@ -53,7 +53,7 @@ class Arithematic
 }
 
 
-    var ret : number = 0;
+        var ret : number = 0;
 	var obj1 = new Arithematic(20,10);
 	var obj2 = new Arithematic(50,10);
 	
