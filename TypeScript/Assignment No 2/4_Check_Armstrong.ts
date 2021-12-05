@@ -10,7 +10,6 @@ Output : It is Armstrong number
 
 var ChkArmstrong = ( iNo : number) => {
 	
-	
 	var iTemp : number =iNo;
 	while(iNo>0)
 	{
