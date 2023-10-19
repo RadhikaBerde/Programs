@@ -4,12 +4,13 @@ Functions of vectors :
 1. push_back
 2. pop_back
 3. insert
-4. max_size
-5. empty
-6. front
-7. back
-8. begin
-9. erase
+4. size
+5. max_size
+6. empty
+7. front
+8. back
+9. begin
+10. erase
 
 */
 
