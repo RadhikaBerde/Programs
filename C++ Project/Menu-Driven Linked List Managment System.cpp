@@ -2,6 +2,10 @@
 
 using namespace std;
 
+#define TRUE 1
+#define FALSE 0
+
+typedef int BOOL;
 
 template <class T>
 struct node
@@ -272,6 +276,304 @@ bool Singly_linkList<T>::DeleteAtPos(int iPos)
     }
 }
 
+/**********************************************************************************************************************/
+
+template<class T>
+class Singly_CircularlinkList
+{
+	private:
+		node<T>* Head;
+		node<T>* Tail;
+		
+    public:                       /* All functions of singly circular linklist */
+		Singly_CircularlinkList();
+		~Singly_CircularlinkList();
+		BOOL InsertFirst(T);
+		BOOL InsertLast(T);
+		BOOL InsertAtPos(T,int); 
+		inline void Display();
+		inline int Count();
+		BOOL DeleteFirst();
+		BOOL DeleteLast();
+		BOOL DeleteAtPos(int); 
+};
+	
+template <class T>
+Singly_CircularlinkList<T> :: Singly_CircularlinkList() /* Constructor */
+{
+    Head = NULL;
+	Tail = NULL;
+}
+
+template <class T>	
+Singly_CircularlinkList<T> :: ~Singly_CircularlinkList() /* Destructor */
+{
+    node<T>* Navigate, Temp;
+	
+	/*if(Head != Temp)
+	{
+		Navigate = Head;
+		
+		while(Navigate != NULL)
+		{
+		   Temp = Navigate->Next;
+		   delete Navigate;
+		   Navigate= Temp;
+		}
+		
+	}*/
+}
+
+template<class T>
+BOOL Singly_CircularlinkList<T> :: InsertFirst(T iNo)    /* InsertFirst */
+{
+   node<T>* newn = NULL;
+   
+   newn = new node<T>;
+   
+   if(newn == NULL)
+   {
+		return FALSE;
+   }
+   
+   newn->Data = iNo;
+   newn->Next = NULL;
+   
+   if((Head == NULL) && (Tail == NULL)) /* If this is the first node */
+   {
+		Head = newn;
+		Tail = newn;
+   }
+   else  /* If linked list cointains atleast 1 node in it */
+   {
+		newn->Next = Head;
+		Head = newn;
+   }
+   
+   Tail->Next = Head; // Always update the circular link
+   
+   return TRUE;
+}
+
+template<class T>
+BOOL Singly_CircularlinkList<T> :: InsertLast(T iNo)
+{
+	node<T>* Temp = Head;
+	node<T>* newn = NULL;
+	
+	newn = new node<T>;
+	
+	newn->Data = iNo;
+	newn->Next = NULL;
+	
+	if((Head == NULL) && (Tail == NULL))
+	{
+		Head = newn;
+		Tail = newn;
+	}
+	else
+	{
+        Tail->Next = newn;	
+		Tail = Tail->Next;
+	}
+	
+	Tail->Next = Head; // Always update the circular link
+	
+	return TRUE;
+	
+}
+
+template<class T>
+BOOL Singly_CircularlinkList<T> :: InsertAtPos(T iNo, int iPos)
+{
+	node<T>* Temp = NULL;
+	node<T>* newn = NULL;
+	int i = 0;
+	int iSize = 0;
+	
+	iSize = Count();
+	
+	if((iPos < 1) || (iPos > iSize + 1))
+	{
+		return FALSE;
+	}
+    else if(iPos == 1) /* If position is first */
+	{
+        InsertFirst(iNo);
+	}
+	else if(iPos > iSize + 1) /* If position is last position */
+	{
+        InsertLast(iNo);
+	}
+	else /* If position is in between first & last node) */
+	{
+		Temp = Head; /* Create temporary pointer and store address of First Node. */
+		
+		for(i = 1;i < iPos - 1; i++) /* 	Travel the Temp pointer till the previous position of targeted node */
+		{
+			Temp = Temp-> Next;
+		}
+		
+		newn = new node<T>;
+	
+		newn->Data = iNo;
+		newn->Next = NULL;
+		
+		newn->Next = Temp->Next; /* Store the address of old node in the next pointer of new node */
+		Temp->Next = newn;       /* Store the address of new node in the in the next pointer of Temp Node */
+	}
+	
+	return TRUE;
+	
+}
+
+template<class T>
+BOOL Singly_CircularlinkList<T> :: DeleteFirst()
+{
+	node<T>* Temp = NULL;
+	
+	Temp = Head;
+	
+	if((Head == NULL) && (Tail == NULL)) /*Linked list is empty */
+	{
+		return FALSE;
+	}
+	else if(Head == Tail) /* Linked list has single Node */
+	{
+		free(Head);          /* Delete First Node */
+		Head = NULL;         /* Now set NULL in Head and Tail as LL is empty */
+		Tail = NULL;
+	}
+	else                     /* Linked list has more than 1 Node */
+	{
+		Head = Head-> Next;  /* Store adrress of 2nd node in Head */
+	
+		free(Tail->Next);    /* Free 1st Node */
+		
+		Tail->Next = Head;   /* Create Circular LL */
+	}
+	
+	return TRUE;
+	
+}
+
+template<class T>
+BOOL Singly_CircularlinkList<T> :: DeleteLast()
+{
+	node<T>* Temp = NULL;                 /* Pointer for traversal */
+	
+	if((Head == NULL) && ( Tail == NULL)) /*Linked list is empty */
+	{
+		return FALSE;
+	}
+	else if(Head == Tail)  /* Single Node */
+	{
+		free(Head);        /* Delete First Node */
+		Head = NULL;       /* Now set NULL in Head and Tail as LL is empty */
+		Tail = NULL;
+	}
+	else                   /* Linked list has more than 1 Node */
+	{
+		Temp = Head;       /* Store the address of first Node in Temp */
+		
+		while(Temp->Next != Tail)
+		{
+			Temp = Temp->Next;
+		}
+			
+		free(Tail);          /* Delete Last Node */
+		Tail = Temp;         /* Store address of old 2nd last Node into Tail */
+		Tail->Next = Head;   /* Create Circular LL */
+		
+	}
+	
+	return TRUE;
+}
+
+template<class T>
+BOOL Singly_CircularlinkList<T> :: DeleteAtPos(int iPos)
+{
+	
+	int i = 0;
+	node<T>* Temp1 = NULL;
+	node<T>* Temp2 = NULL;
+	int iCnt = 0;
+	
+	iCnt = Count();
+	
+	if((iPos < 1 ) || (iPos> iCnt))
+	{
+		return FALSE;
+	}
+	else if(iPos == 1)
+	{
+		DeleteFirst();
+	}
+	else if(iPos == iCnt)
+	{
+		DeleteLast();
+	}
+	else
+	{
+		Temp1 = Head;
+		
+		for(i=1;i<iPos-1;i++)
+		{
+			Temp1 = Temp1->Next;
+		}
+	    Temp2 = Temp1->Next;
+		Temp1->Next = Temp2->Next;
+		free(Temp2);
+	}
+	
+	return TRUE;
+}
+
+template<class T>
+void Singly_CircularlinkList<T> :: Display()        /* Display */ 
+{
+	node<T>* Temp = NULL;
+	
+	Temp = Head;
+	
+	if((Head == NULL )&& (Tail == NULL))
+	{
+		return;
+	}
+	
+	do
+	{
+		cout<<Temp->Data<<"->";
+		Temp= Temp->Next;
+	}while(Temp != Tail->Next);
+	
+	cout<<" \n";
+}
+
+template<class T>
+int Singly_CircularlinkList<T> :: Count()        /* Count */ 
+{
+	node<T>* Temp = NULL;
+	int iCnt = 0;
+	
+	Temp = Head;
+	
+	if((Head == NULL ) && (Tail == NULL))
+	{
+		return 0;
+	}
+	
+	do
+	{
+		iCnt++;
+		Temp= Temp->Next;
+	}while(Temp != Tail->Next);
+	
+	return iCnt;
+}
+
+/******************************************************************************************************************************************/
+
 int main()
 {
     
@@ -477,7 +779,7 @@ int main()
 							}
 							case 2:
 							{
-								int Data;
+								char Data;
 								cout << "Enter Data: ";
 								cin >> Data;
 								if (objc.InsertLast(Data))
@@ -493,7 +795,7 @@ int main()
 							}
 							case 3:
 							{
-								int Data;
+								char Data;
 								int position;
 								int iFlag = 0;
 					
@@ -844,7 +1146,540 @@ int main()
 			
 			case 2:
 			{
-				cout << "Inside Singly Circular Linked list" << endl;
+				if (dataType == 'i')
+				{
+					Singly_CircularlinkList<int> obj1;
+					
+					do
+					{
+						cout << "Choose an option:" << "\n";
+						cout << "1. Insert First" << "\n";
+						cout << "2. Insert Last" << "\n";
+						cout << "3. Insert at Position" << "\n";
+						cout << "4. Delete First" << "\n";
+						cout << "5. Delete Last" << "\n";
+						cout << "6. Delete at Position" << "\n";
+						cout << "7. Display" << "\n";
+						cout << "8. Count" << "\n";
+						cout << "0. Exit" << "\n";
+				
+						cout << "Enter your choice: " << "\n";
+						cin >> choice;
+				
+						switch (choice)
+						{
+						case 1:
+						{
+							int Data;
+							cout << "Enter Data: ";
+							cin >> Data;
+							if (obj1.InsertFirst(Data))
+							{
+								cout << "Node inserted successfully." << "\n";
+							}
+							else
+							{
+								cout << "Node insertion failed." << "\n";
+							}
+				
+							break;
+						}
+						case 2:
+						{
+							int Data;
+							cout << "Enter Data: ";
+							cin >> Data;
+							if (obj1.InsertLast(Data))
+							{
+								cout << "Node inserted successfully." << "\n";
+							}
+							else
+							{
+								cout << "Node insertion failed." << "\n";
+							}
+				
+							break;
+						}
+						case 3:
+						{
+							int Data;
+							int position;
+							int iFlag = 0;
+				
+							cout << "Enter Data: ";
+							cin >> Data;
+							cout << "Enter position: ";
+							cin >> position;
+				
+							if (obj1.InsertAtPos(Data, position))
+							{
+								cout << "Node inserted successfully." << "\n";
+							}
+							else
+							{
+								cout << "Invalid position." << "\n";
+							}
+							break;
+						}
+						case 4:
+						{
+							if (obj1.DeleteFirst())
+							{
+								cout << "Node deleted successfully." << "\n";
+							}
+							else
+							{
+								cout << "Node deletion failed." << "\n";
+							}
+							break;
+						}
+						case 5:
+						{
+							if (obj1.DeleteLast())
+							{
+								cout << "Node deleted successfully." << "\n";
+							}
+							else
+							{
+								cout << "Node deletion failed." << "\n";
+							}
+							break;
+						}
+						case 6:
+						{
+							int position;
+				
+							cout << "Enter position: ";
+							cin >> position;
+				
+							if (obj1.DeleteAtPos(position))
+							{
+								cout << "Node deleted successfully." << "\n";
+							}
+							else
+							{
+								cout << "Node deletion failed. Invalid position." << "\n";
+							}
+							break;
+						}
+						case 7:
+							obj1.Display();
+							break;
+				
+						case 8:
+							cout << "Count: " << obj1.Count() << "\n";
+							break;
+				
+						case 0:
+							break;
+				
+						default:
+							cout << "Invalid choice. Try again." << "\n";
+						}
+					} while (choice != 0);
+				}
+				else if (dataType == 'c')
+				{
+					Singly_CircularlinkList<char> objc;
+					
+					do
+					{
+						cout << "Choose an option:" << "\n";
+						cout << "1. Insert First" << "\n";
+						cout << "2. Insert Last" << "\n";
+						cout << "3. Insert at Position" << "\n";
+						cout << "4. Delete First" << "\n";
+						cout << "5. Delete Last" << "\n";
+						cout << "6. Delete at Position" << "\n";
+						cout << "7. Display" << "\n";
+						cout << "8. Count" << "\n";
+						cout << "0. Exit" << "\n";
+				
+						cout << "Enter your choice: " << "\n";
+						cin >> choice;
+				
+						switch (choice)
+						{
+							case 1:
+							{
+								char Data;
+								cout << "Enter Data: ";
+								cin >> Data;
+								if (objc.InsertFirst(Data))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node insertion failed." << "\n";
+								}
+					
+								break;
+							}
+							case 2:
+							{
+								char Data;
+								cout << "Enter Data: ";
+								cin >> Data;
+								if (objc.InsertLast(Data))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node insertion failed." << "\n";
+								}
+					
+								break;
+							}
+							case 3:
+							{
+								char Data;
+								int position;
+								int iFlag = 0;
+					
+								cout << "Enter Data: ";
+								cin >> Data;
+								cout << "Enter position: ";
+								cin >> position;
+					
+								if (objc.InsertAtPos(Data, position))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Invalid position." << "\n";
+								}
+								break;
+							}
+							case 4:
+							{
+								if (objc.DeleteFirst())
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed." << "\n";
+								}
+								break;
+							}
+							case 5:
+							{
+								if (objc.DeleteLast())
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed." << "\n";
+								}
+								break;
+							}
+							case 6:
+							{
+								int position;
+					
+								cout << "Enter position: ";
+								cin >> position;
+					
+								if (objc.DeleteAtPos(position))
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed. Invalid position." << "\n";
+								}
+								break;
+							}
+							case 7:
+								objc.Display();
+								break;
+					
+							case 8:
+								cout << "Count: " << objc.Count() << "\n";
+								break;
+					
+							case 0:
+								break;
+					
+							default:
+								cout << "Invalid choice. Try again." << "\n";
+						}
+					} while (choice != 0);
+				}
+				else if (dataType == 'f')
+				{
+					
+					Singly_CircularlinkList<float> objf;
+					
+					do
+					{
+						cout << "Choose an option:" << "\n";
+						cout << "1. Insert First" << "\n";
+						cout << "2. Insert Last" << "\n";
+						cout << "3. Insert at Position" << "\n";
+						cout << "4. Delete First" << "\n";
+						cout << "5. Delete Last" << "\n";
+						cout << "6. Delete at Position" << "\n";
+						cout << "7. Display" << "\n";
+						cout << "8. Count" << "\n";
+						cout << "0. Exit" << "\n";
+				
+						cout << "Enter your choice: " << "\n";
+						cin >> choice;
+				
+						switch (choice)
+						{
+							case 1:
+							{
+								float Data;
+								cout << "Enter Data: ";
+								cin >> Data;
+								if (objf.InsertFirst(Data))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node insertion failed." << "\n";
+								}
+					
+								break;
+							}
+							case 2:
+							{
+								float Data;
+								cout << "Enter Data: ";
+								cin >> Data;
+								if (objf.InsertLast(Data))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node insertion failed." << "\n";
+								}
+					
+								break;
+							}
+							case 3:
+							{
+								float Data;
+								int position;
+								int iFlag = 0;
+					
+								cout << "Enter Data: ";
+								cin >> Data;
+								cout << "Enter position: ";
+								cin >> position;
+					
+								if (objf.InsertAtPos(Data, position))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Invalid position." << "\n";
+								}
+								break;
+							}
+							case 4:
+							{
+								if (objf.DeleteFirst())
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed." << "\n";
+								}
+								break;
+							}
+							case 5:
+							{
+								if (objf.DeleteLast())
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed." << "\n";
+								}
+								break;
+							}
+							case 6:
+							{
+								int position;
+					
+								cout << "Enter position: ";
+								cin >> position;
+					
+								if (objf.DeleteAtPos(position))
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed. Invalid position." << "\n";
+								}
+								break;
+							}
+							case 7:
+								objf.Display();
+								break;
+					
+							case 8:
+								cout << "Count: " << objf.Count() << "\n";
+								break;
+					
+							case 0:
+								break;
+					
+							default:
+								cout << "Invalid choice. Try again." << "\n";
+						}
+					} while (choice != 0);
+				}
+				else if (dataType == 'd')
+				{
+					Singly_CircularlinkList<double> objd;
+					
+					do
+					{
+						cout << "Choose an option:" << "\n";
+						cout << "1. Insert First" << "\n";
+						cout << "2. Insert Last" << "\n";
+						cout << "3. Insert at Position" << "\n";
+						cout << "4. Delete First" << "\n";
+						cout << "5. Delete Last" << "\n";
+						cout << "6. Delete at Position" << "\n";
+						cout << "7. Display" << "\n";
+						cout << "8. Count" << "\n";
+						cout << "0. Exit" << "\n";
+				
+						cout << "Enter your choice: " << "\n";
+						cin >> choice;
+				
+						switch (choice)
+						{
+							case 1:
+							{
+								double Data;
+								cout << "Enter Data: ";
+								cin >> Data;
+								if (objd.InsertFirst(Data))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node insertion failed." << "\n";
+								}
+					
+								break;
+							}
+							case 2:
+							{
+								double Data;
+								cout << "Enter Data: ";
+								cin >> Data;
+								if (objd.InsertLast(Data))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node insertion failed." << "\n";
+								}
+					
+								break;
+							}
+							case 3:
+							{
+								double Data;
+								int position;
+								int iFlag = 0;
+					
+								cout << "Enter Data: ";
+								cin >> Data;
+								cout << "Enter position: ";
+								cin >> position;
+					
+								if (objd.InsertAtPos(Data, position))
+								{
+									cout << "Node inserted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Invalid position." << "\n";
+								}
+								break;
+							}
+							case 4:
+							{
+								if (objd.DeleteFirst())
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed." << "\n";
+								}
+								break;
+							}
+							case 5:
+							{
+								if (objd.DeleteLast())
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed." << "\n";
+								}
+								break;
+							}
+							case 6:
+							{
+								int position;
+					
+								cout << "Enter position: ";
+								cin >> position;
+					
+								if (objd.DeleteAtPos(position))
+								{
+									cout << "Node deleted successfully." << "\n";
+								}
+								else
+								{
+									cout << "Node deletion failed. Invalid position." << "\n";
+								}
+								break;
+							}
+							case 7:
+								objd.Display();
+								break;
+					
+							case 8:
+								cout << "Count: " << objd.Count() << "\n";
+								break;
+					
+							case 0:
+								break;
+					
+							default:
+								cout << "Invalid choice. Try again." << "\n";
+						}
+					} while (choice != 0);
+				}
+				else
+				{
+					cout << "Invalid data type selection." << endl;
+				}
+				
 				break;
 			}
 			
@@ -869,4 +1704,3 @@ int main()
 	}
     return 0;
 }
-
